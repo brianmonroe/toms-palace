@@ -1,0 +1,256 @@
+<?php
+// Game schedule array for Tom's Pickle Palace
+$games = [
+    [
+        'home_team' => 'Pickle Warriors',
+        'away_team' => 'Dill Destroyers',
+        'date' => '2025-06-01',
+        'time' => '14:00',
+        'home_score' => 3,
+        'away_score' => 2,
+        'status' => 'completed'
+    ],
+    [
+        'home_team' => 'Gherkin Giants',
+        'away_team' => 'Brine Bombers',
+        'date' => '2025-06-05',
+        'time' => '18:30',
+        'home_score' => null,
+        'away_score' => null,
+        'status' => 'scheduled'
+    ],
+    [
+        'home_team' => 'Pickle Warriors',
+        'away_team' => 'Cucumber Crushers',
+        'date' => '2025-06-10',
+        'time' => '16:00',
+        'home_score' => null,
+        'away_score' => null,
+        'status' => 'scheduled'
+    ],
+    [
+        'home_team' => 'Sour Squad',
+        'away_team' => 'Pickle Warriors',
+        'date' => '2025-06-15',
+        'time' => '19:00',
+        'home_score' => 1,
+        'away_score' => 4,
+        'status' => 'completed'
+    ]
+];
+
+// Function to format date for display
+function formatDate($date) {
+    return date('F j, Y', strtotime($date));
+}
+
+// Function to format time for display
+function formatTime($time) {
+    return date('g:i A', strtotime($time));
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tom's Pickle Palace - Game Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .schedule-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .game-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .matchup {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2E7D32;
+        }
+        
+        .vs {
+            color: #666;
+            margin: 0 10px;
+        }
+        
+        .game-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .detail-item {
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .detail-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .score {
+            font-size: 1.5em;
+            color: #4CAF50;
+        }
+        
+        .status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.scheduled {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .no-games {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .game-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .game-details {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .matchup {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🥒 Tom's Pickle Palace</h1>
+        <p>Home of Championship Pickle Ball</p>
+    </div>
+    
+    <div class="schedule-container">
+        <h2>Game Schedule</h2>
+        
+        <?php if (empty($games)): ?>
+            <div class="no-games">
+                No games scheduled at this time.
+            </div>
+        <?php else: ?>
+            <?php foreach ($games as $game): ?>
+                <div class="game-card">
+                    <div class="game-header">
+                        <div class="matchup">
+                            <?php echo htmlspecialchars($game['home_team']); ?>
+                            <span class="vs">vs</span>
+                            <?php echo htmlspecialchars($game['away_team']); ?>
+                        </div>
+                        <div class="status <?php echo $game['status']; ?>">
+                            <?php echo $game['status']; ?>
+                        </div>
+                    </div>
+                    
+                    <div class="game-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Date</div>
+                            <div class="detail-value"><?php echo formatDate($game['date']); ?></div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-label">Time</div>
+                            <div class="detail-value"><?php echo formatTime($game['time']); ?></div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-label">Score</div>
+                            <div class="detail-value">
+                                <?php if ($game['status'] === 'completed' && $game['home_score'] !== null && $game['away_score'] !== null): ?>
+                                    <span class="score"><?php echo $game['home_score']; ?> - <?php echo $game['away_score']; ?></span>
+                                <?php else: ?>
+                                    <span style="color: #999;">TBD</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</body>
+</html>
